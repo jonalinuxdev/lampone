@@ -44,7 +44,7 @@ let currentEPGEndTime = null; //
 
 async function loadChannelNameMap() {
   try {
-    const response = await fetch('./epg/epg-name-map.json');
+    const response = await fetch('https://raw.githubusercontent.com/jonalinuxdev/auto-epg-updater/refs/heads/main/epg/epg-name-map.json');
     if (!response.ok) throw new Error('HTTP error! Status: ' + response.status);
     channelNameMap = await response.json();
   } catch (error) {
@@ -79,7 +79,7 @@ async function loadEPG(channelName) {
 
   let epgMap = {};
   try {
-    const res = await fetch('./epg/stable-epg-sources.json');
+    const res = await fetch('https://raw.githubusercontent.com/jonalinuxdev/auto-epg-updater/refs/heads/main/epg/stable-epg-sources.json');
     if (!res.ok) throw new Error('Error fetching epg-sources');
     epgMap = await res.json();
   } catch (err) {
