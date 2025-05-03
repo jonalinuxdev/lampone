@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lampone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="#css/style.css">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+
+</head>
+<body>
+
+<header class="main-header">
+  <a href="index.html" class="logo-area">
+    <img src="img/logo.png" alt="Logo" class="site-logo">
+    <span class="site-title">lampone</span>
+    <p class="logomobile">Mobile v0.6b</p>
+  </a>
+</header>
+
+<main class="main-content">
+
+  <div class="player-container">
+    <video id="player" controls autoplay></video>
+  </div>
+
+  <div class="panel-box">
+    <span id="channelTitle" class="channelCurrent"><span id="statusMessage" class="statusMessage"></span></span>
+    
+  </div>
+
+  <div class="search-container">
+    <input id="searchBox" class="search firefox-style" type="text" placeholder="Search channel...">
+  </div>
+
+
+
+                
+        <!-- Controlli caricamento URL e reset -->
+        <div class="listControl">
+
+          <input type="file" id="localM3uFile" accept=".m3u,.m3u8" style="display: none;">
+          
+          <button onclick="document.getElementById('localM3uFile').click(); return false;">
+          <i style="padding-left:10px; font-size:30px" class="fa-duotone fa-solid fa-file-arrow-up"></i></button>
+          
+               <div class="url-wrapper">
+  <div class="url-container">
+    
+    <input type="text" id="remoteM3uUrl" class="url" placeholder="https://load.link.from.url.m3u">
+   <button id="loadRemoteM3u" title="Load from URL">
+    <i class="fa-duotone fa-solid fa-download"></i>
+  </button>
+  </div>
+</div>
+
+
+
+           
+           <div class="button-wrapper">
+  <button onclick="clearSavedChannels()">
+    <i class="fa-duotone fa-solid fa-trash-clock"></i>
+  </button>
+</div>
+
+
+        </div>
+
+
+
+
+
+
+
+  <div class="split-container">
+    <aside class="sidebar" id="channelList">
+      <!-- Lista canali -->
+    </aside>
+
+    <aside class="sidebar flag-sidebar" id="countrySelector">
+      <!-- Lista paesi -->
+    </aside>
+  </div>
+
+</main>
+
+ <footer class="main-footer">
+    <p>
+      <span id="year"></span> © lampone - 
+      <a href="https://gitlab.com/lampone-dev" target="_blank"><i class="fa-brands fa-gitlab"></i> GitLab</a> - 
+      <a href="https://www.paypal.com/donate/?hosted_button_id=WTN3XPYNNKRNL" target="_blank" class="donate-link">Donate</a> - 
+      <span class="visite">
+        <i class="fa-duotone fa-solid fa-user"></i> Online 
+        <span id="online"><i class="fa-duotone fa-solid fa-spinner-third fa-spin"></i></span> - 
+        Views <span id="visitors"><i class="fa-duotone fa-solid fa-spinner-third fa-spin"></i></span>
+      </span>
+    </p>
+  </footer>
+
+<script src="js/scripts.js"></script>
+<script src="js/epg.js"></script>
+<script src="js/visits.js"></script>
+<script src="js/footer.js"></script>
+
+</body>
+</html>

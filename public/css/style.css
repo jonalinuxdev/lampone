@@ -1,0 +1,741 @@
+/* Assicurati che html e body gestiscano correttamente lo spazio verticale */
+html, body {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background:#0e1117;
+  color: #c9d1d9;
+  height: 100%; /* Importante per permettere al flexbox nel body di funzionare */
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */ /* Potrebbe causare problemi se il contenuto totale supera la larghezza, valuta se è davvero necessario qui */
+  display: flex; /* Body come flex container principale */
+  flex-direction: column;
+}
+
+
+
+
+
+code, pre{
+  font-family: "Ubuntu Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  background:#1c2128;
+  color:#58a6ff;
+}
+
+button {
+  
+  border: none;
+  background:transparent;
+  color:#c9d1d9;
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:hover {
+  background:transparent;
+  color:#58a6ff;
+}
+
+.main-header {
+  background:#161b22;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  flex-shrink: 0; /* Impedisce all'header di restringersi */
+}
+
+.logodesktop{
+  color:#d7fa5a;
+  font-size:14px;
+  font-family: "Ubuntu Mono", monospace;
+  background:#1c2128;
+  padding:6px 8px;
+  border-radius:6px;
+  margin-right:10px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-logo {
+  height: 32px;
+  width: auto;
+  padding-top:10px;
+  padding-left:10px;
+  padding-bottom:10px;
+}
+
+.site-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.layout-container {
+  flex: 1; /* Occupare lo spazio rimanente verticale */
+  display: flex; /* Container flex per le sidebar e il contenuto */
+  overflow: hidden; /* Nasconde il contenuto che esce, utile per layout orizzontali */
+}
+
+/* Stili comuni per le sidebar */
+.sidebar {
+  padding: 0;
+  width: 240px; /* Larghezza fissa */
+  min-width: 220px; /* Non scendere sotto questa larghezza */
+  height: 100%;
+  overflow-y: auto; /* Permette lo scroll verticale se il contenuto è troppo lungo */
+  overflow-x: hidden; /* Nasconde il contenuto orizzontale in eccesso */
+  box-sizing: border-box;
+  position: relative;
+  background-color: #1c2128;
+  scrollbar-gutter: stable;
+  flex-shrink: 0; /* Impedisce alla sidebar di restringersi */
+}
+
+/* Stili specifici per la sidebar sinistra (se .country-selector è la sinistra) */
+.country-selector{
+  flex-shrink: 0; /* Già presente, bene */
+  min-width: 220px; /* Già presente, bene */
+  width: 240px; /* Assicura che la larghezza sia 300px */
+  /* Altri stili specifici per la sidebar sinistra */
+}
+
+/* Stili specifici per la sidebar destra */
+.right-sidebar {
+  flex-shrink: 0; /* Già presente, bene */
+  width: 240px; /* Imposta la larghezza fissa anche per la destra */
+  min-width: 220px; /* Non scendere sotto questa larghezza */
+  /* Altri stili per la sidebar destra se any */
+}
+
+.main-content {
+  flex: 1; /* Occupare lo spazio rimanente orizzontale */
+  min-width: 0; /* Permette al contenuto principale di ridursi più del suo contenuto interno se necessario */
+  box-sizing: border-box;
+  overflow-y: auto; /* Aggiungi scroll verticale se il contenuto principale è troppo lungo */
+  padding: 10px; /* Aggiungi padding se desiderato */
+}
+
+/* Footer */
+.main-footer {
+  background: #161b22;
+  color: #8b949e;
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
+  flex-shrink: 0; /* Impedisce al footer di restringersi */
+}
+
+.main-footer a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.main-footer a:hover {
+  text-decoration: underline;
+}
+
+.visite{}
+
+#player {
+  width: 100%; /* Occupare il 100% della larghezza del suo contenitore (.main-content) */
+  max-width: 960px; /* Limite massimo di larghezza (questo lo fa espandere fino a 960px) */
+  margin: auto; /* Centra il player nel main-content */
+  display: block; /* Assicura che prenda la larghezza impostata */
+  background:#161b22;
+  background-image: url("../img/logo.png");
+  background-position: center top;
+  background-size: 200px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+
+/* Su schermi più larghi - questa regola non dovrebbe impedire il restringimento, ma solo l'espansione oltre 960px */
+@media (min-width: 2000px) {
+  #player {
+    max-width: 2200px; /* Permette al player di espandersi di più su schermi molto grandi */
+  }
+}
+
+/* ... (rimanente CSS invariato) ... */
+
+.info p{
+  font-size:14px;
+  font-family: "Ubuntu Mono", monospace;
+  background:#1c2128;
+  padding:6px 8px;
+  border-radius:8px;
+  margin-right:10px;
+  display: inline;
+  color: #c9d1d9;
+}
+
+.log-log { color: #ccc; }
+.log-warn { color: orange; }
+.log-error { color: red; }
+
+.log-log,
+.log-warn,
+.log-error {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+
+.listControl{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1c2128;
+  padding:10px;
+}
+
+
+
+.listControl p{
+  font-size:14px;
+  font-family: "Ubuntu Mono", monospace;
+  padding-left:10px;
+  display: inline;
+  color: #c9d1d9;
+}
+
+
+
+
+
+.stars{
+  font-size:14px!important;
+  font-family: "Ubuntu Mono", monospace;
+  background:#1c2128;
+  padding:6px 6px;
+  border-radius:8px;
+  margin-right:10px;
+  display: inline;
+
+}
+
+.player-controls {
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #161b22;
+  flex-shrink: 0; /* Impedisce ai controlli del player di restringersi */
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #444;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 5px;
+  margin-top: 4px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #f9c855;
+  transition: width 0.5s;
+}
+
+.qualityinfo{
+  font-size:17px;
+}
+
+.quality{
+  font-size:14px;
+  background:#1c2128;
+  color:#58a6ff;
+  padding:6px 6px;
+  border-radius:8px;
+  margin-right:10px;
+  display: inline;
+}
+
+.quality-options {
+  margin-top:10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+.quality-option {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background:#1c2128;
+  transition: background 0.2s;
+  border:0px solid #2c313a ;
+  color: #c9d1d9;
+}
+
+.quality-option:hover {
+  background:#2c313a;
+  border:0px solid #2c313a ;
+}
+
+.quality-option.active {
+  background:#2c313a;
+  border:1px solid #58a6ff;
+}
+
+.maintenance{
+  color:#ff7b72;
+}
+
+.listupdate{
+  color:#58a6ff;
+
+}
+
+.date{
+  font-size:;
+}
+
+.canali{
+  color:#56d364;
+}
+
+.totchan{
+  color:#c6f032;
+  font-size:14px;
+}
+
+.skip{
+  color:#ff7b72;
+}
+
+.ip{
+  font-weight:;
+}
+
+.panel-box {
+  width:100%; 
+  max-width: 960px;
+  margin: 0px auto;
+  padding: 10px 0px 0px 0px;
+  background:#1c2128;
+}
+
+.panel-list {
+  font-size: 14px;
+  font-family: "Ubuntu Mono", monospace;
+  background: #101317;
+  max-width: 960px;
+  max-height: 400px; /* o quanto vuoi */
+  min-height: 300px;
+  overflow-y: auto;   /* scroll verticale */
+  margin: 0px auto;
+  padding: 20px;
+  border: 2px solid #1c2128;
+}
+
+
+.terminal-line {
+
+}
+
+.blinking-cursor {
+  animation: blink 1s steps(1) infinite;
+  color: #58a6ff;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+.container-box {
+  padding: 2px 30px 30px 30px;
+  font-size:14px;
+  color: #c9d1d9;
+}
+
+.repo-language-color {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius:50%;
+  background-color: #89e051;
+}
+
+.flag {
+  width: 36px; /* Attenzione: larghezza diversa qui rispetto a .flag-sidebar */
+  height: 36px; /* Attenzione: altezza diversa qui rispetto a .flag-sidebar */
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.flag:hover,
+.flag.selected {
+  border-color: none;
+}
+
+.flag-sidebar {
+  width: 240px; /* Questo width potrebbe essere ridondante se applicato anche a .sidebar */
+  background: ;
+  overflow-y: auto;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.flag-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin:5px;
+  border-radius: 8px;
+  background-color:#1c2128;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.flag-wrapper:hover {
+  background-color: #2c313a;
+  border-left: 0px solid #697282;
+  border-radius: 8px;
+  margin:5px;
+}
+
+/* Stili specifici per le flag all'interno delle sidebar */
+.flag-wrapper .flag { /* Applica questi stili alle immagini flag dentro .flag-wrapper */
+  width: 28px;
+  height: 28px;
+}
+
+
+.flag-label {
+  font-size: 17px;
+  padding-left:5px;
+  color: #c9d1d9;
+}
+
+.flag-wrapper.selected {
+  background-color: #2c313a;
+  opacity:1;
+  border: 0px solid #58a6ff;
+  border-radius: 8px;
+  margin:10px;
+}
+
+.update-info{
+  font-size: 17px;
+  color:#555;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1c2128;
+  padding:8px ;
+  margin:10px;
+  cursor: pointer;
+  transition: 0.3s;
+  min-height: 30px;
+}
+
+.channel:hover {
+  background-color: #2c313a;
+  border-left: 0px solid #697282;
+  border-radius: 8px;
+  margin:10px;
+}
+
+.channel.selected {
+  background-color: #2c313a;
+  opacity:1;
+  border: 0px solid #58a6ff;
+  border-radius: 8px;
+  margin:10px;
+}
+
+.channel.selected::after {
+  font-family: "Font Awesome 6 Pro";
+  font-weight: 900;
+  content: "\f8dd";
+  color:#697282;
+  opacity:0.5;
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 25px;
+}
+
+.channel-name {
+  font-size: 17px;
+  color: #c9d1d9;
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.channel img {
+  width: 30px;
+  max-height: 37px;
+}
+
+.channel p {
+  margin-top: 5px; /* Attenzione, questo stile per <p> dentro .channel potrebbe influenzare il layout flex */
+  font-size: 17px;
+  text-align: center;
+  color: #c9d1d9;
+}
+
+.channelCurrent{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size:20px;
+  color: #c9d1d9;
+}
+
+.channelCurrent {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.channelCurrent img{
+  width: 60px;
+  height: auto;
+  margin-right: 20px;
+}
+
+
+.url-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+   
+}
+
+.url-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+   padding: 6px 30px 6px 30px;
+   width: 300px;
+}
+
+
+.url:placeholder-shown ~ .clear-icon {
+  display: none;
+}
+
+.url:not(:placeholder-shown) ~ .clear-icon,
+.url:focus ~ .clear-icon {
+  display: block;
+}
+
+
+.url-container input {
+  padding: 6px 30px 6px 30px; /* spazio per l’icona */
+  width: 300px;
+}
+
+.url{
+  background: #2c313a;
+  color: #c9d1d9;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 6px;
+  font-size: 14px;
+  width:300px;
+}
+
+.url:focus {
+  background: #383f4b;
+  outline: none;
+}
+
+.globe-icon {
+  position:absolute ;
+  right: -25px;
+  pointer-events: none;
+}
+
+.clear-icon {
+  position:absolute ;
+  right: 25px;
+  font-size: ;
+  color: ;
+  cursor: pointer;
+  display:;
+  z-index: 2;
+  background: ;
+  color: #c9d1d9;
+  border: none;
+  
+  font-size: 16px;
+}
+
+
+
+.clear-icon:hover {
+  color:#ff5858;
+}
+
+#loadRemoteM3u {
+  padding-right: 0px;
+  color: #c9d1d9;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#loadRemoteM3u i {
+  pointer-events: none;
+}
+
+#loadRemoteM3u:hover i {
+  color: #58a6ff;
+}
+
+
+
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.search-container i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
+
+.search-container input {
+  padding-left: 30px; /* spazio per l'icona */
+}
+
+
+.firefox-style {
+  background: #1c2128;
+  color: #c9d1d9;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 6px;
+  font-size: 14px;
+  width: 120px; 
+  margin-top: 0px;
+  margin-bottom: 0px;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.firefox-style:focus {
+  outline: none;
+  background: #2c313a;
+}
+
+@media (max-width: 768px) {
+  /* Questa media query riduce le dimensioni degli elementi all'interno delle sidebar su schermi piccoli, il che è buono */
+  .channel img {
+    width: 20px;
+    height: auto;
+  }
+
+  .channel-name {
+    font-size: 12px;
+  }
+
+  .flag-label {
+    font-size: 12px;
+  }
+
+  .flag-wrapper .flag { /* Seleziona le flag dentro il wrapper */
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.anim-rotate {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.statusMessage{
+  display: inline;
+}
+
+
+/* Stili per l'EPG */
+#epg-container {
+  background: ; /* Sostituisci con un colore se necessario */
+  color: #f0f0f0;
+  padding: 5px;
+  margin-top: 1px;
+}
+
+.program {
+  padding:20px;
+}
+
+.channel-epg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+  margin-bottom: 8px;
+  flex-wrap: wrap; /* Permette agli elementi di andare a capo se lo spazio è insufficiente */
+  width:95%; /* Attenzione: un width percentuale qui potrebbe interagire con il flex layout */
+}
+
+.channel-info {
+  align-items: center; /* Aggiungi display: flex; qui se vuoi allineare verticalmente */
+  font-size: 0px; /* Questo nasconderà il testo se presente direttamente qui */
+  flex-shrink: 0;
+  gap: 10px; /* Lo spazio tra gli elementi flex */
+  padding-right:10px;
+}
+
+.channel-info img {
+  width: 60px;
+  height: auto;
+  padding-left:50px!important; /* Attenzione ai !important, cerca di evitarli se possibile */
+}
+
+.epg-info {
+  flex: 1; /* Occupa lo spazio rimanente */
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.epg-info .program {
+  padding: 5px 0;
+}
+
+
+.progress-bar {
+  height: 2px;
+  margin-top: 2px;
+  width:100%;
+} 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+ <script>
+    window.onload = function () {
+      const width = window.innerWidth;
+      if (width < 1180) {
+        window.location.href = "mobile.html";
+      } else {
+        window.location.href = "desktop.html";
+      }
+    };
+  </script>
+</head>
+<body>
+
+</body>
+</html>
