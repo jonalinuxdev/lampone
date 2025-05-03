@@ -83,7 +83,7 @@ Use a text editor (Notepad, VS Code) and follow this example:
 #EXTM3U
 #EXTINF:-1 tvg-id="ChannelID" tvg-name="EPG Name" group-title="Category/Country" tvg-logo="https://example.com/logo.png",Channel Name
 http://your_server/stream.m3u8
-
+```
 
 - **#EXTM3U**: required header line.
 - **#EXTINF:-1**: precedes each channel.
