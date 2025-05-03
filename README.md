@@ -4,6 +4,8 @@
 
 Lampone is a web-based media player that lets you watch TV streams from M3U/M3U8 playlists directly in your browser. It helps you organize channels by category or country, quickly find what you want to watch, and enjoy a seamless experience with integrated program information (EPG).
 
+
+
 ---
 
 ## Key Features for Users
@@ -96,6 +98,34 @@ http://your_server/stream.m3u8
 Save the file with a `.m3u` or `.m3u8` extension and load it into Lampone.
 
 ---
+
+* **Resolution Labels Mapping (from code):**
+    Lampone maps stream heights to the following labels for user display:
+
+    | Height (px) | Label             | Notes                     |
+    | :---------- | :---------------- | :------------------------ |
+    | >= 8640     | 16K Experimental  | Ultra futuristic          |
+    | >= 4320     | 8K Ultra HD       |                           |
+    | >= 2880     | 5K UltraWide      | e.g., iMac 27" displays   |
+    | >= 2160     | 4K Ultra HD       |                           |
+    | >= 1600     | WQXGA+ 1600p      | Tall monitors             |
+    | >= 1440     | 2K QHD            |                           |
+    | >= 1280     | HD+ 1280p         | Improved HD streams       |
+    | >= 1080     | Full HD           |                           |
+    | >= 1024     | XGA+ 1024p        | Medium-high quality       |
+    | >= 720      | HD Ready          |                           |
+    | >= 576      | PAL SD 576p       | European standard         |
+    | >= 480      | SD 480p           |                           |
+    | >= 360      | SD 360p           |                           |
+    | >= 240      | Low 240p          |                           |
+    | >= 144      | Very Low 144p     |                           |
+    | >= 120      | Low 120p          |                           |
+    | >= 96       | Retro 96p         | Meme mode / Very low      |
+    | default     | undefined         | If height is not matched  |
+
+
+---
+
 
 ## License
 
