@@ -5,7 +5,7 @@ const LOCAL_STORAGE_PLAYLISTS_KEY = 'lampone-K@8$dL%3vZ&nB1xR*';
 const LOCAL_STORAGE_CHANNELS_KEY = 'lampone-m^7Y!zR4*P8&kQ3@h';
 
 const m3uUrls = [
-    ''
+    'samplevideos.m3u'
 ];
 
 let hls; // Variable for the Hls.js instance
