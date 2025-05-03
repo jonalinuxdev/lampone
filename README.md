@@ -5,7 +5,7 @@
 Lampone is a web-based media player that lets you watch TV streams from M3U/M3U8 playlists directly in your browser. It helps you organize channels by category or country, quickly find what you want to watch, and enjoy a seamless experience with integrated program information (EPG).
 
 
-
+demo page: https://lampone-ui-4243f6.gitlab.io
 ---
 
 ## Key Features for Users
