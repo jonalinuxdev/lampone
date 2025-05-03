@@ -6,9 +6,10 @@ stages:
 pages:
   stage: pages
   script:
-    - echo "Skip build: la cartella public è già pronta"
+    - echo "Public folder already in place, skipping build"
   artifacts:
     paths:
       - public
-  only:
-    - main
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
