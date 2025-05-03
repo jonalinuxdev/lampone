@@ -15,6 +15,59 @@ html, body {
 
 
 
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: ;
+  padding: 10px 20px;
+  color: white;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav li a {
+  color: #8f9fbb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.main-nav li a:hover {
+  color: #c9d1d9;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .main-nav ul {
+    flex-direction: column;
+    gap: 10px;
+    background: ;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .main-nav {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
 
 
 code, pre{
