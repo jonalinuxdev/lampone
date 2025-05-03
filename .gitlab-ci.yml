@@ -1,0 +1,14 @@
+image: alpine:latest
+
+stages:
+  - pages
+
+pages:
+  stage: pages
+  script:
+    - echo "Skip build: la cartella public è già pronta"
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
