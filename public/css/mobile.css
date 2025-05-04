@@ -78,6 +78,22 @@ html, body {
   text-align: center;
 }
 
+
+
+.log-log { color: #ccc; }
+.log-warn { color: orange; }
+.log-error { color: red; }
+
+.log-log,
+.log-warn,
+.log-error {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+
+
 .search-container {
   width: 100%;
   padding: 10px 0;
