@@ -37,6 +37,7 @@ html, body {
   color: #8f9fbb;
   text-decoration: none;
   font-weight: 500;
+  font-size: 12px;
 }
 
 .main-nav li a:hover {
@@ -689,7 +690,7 @@ button:hover {
   border-radius: 6px;
   padding: 6px 6px;
   font-size: 14px;
-  width: 120px; 
+  width: 200px; 
   margin-top: 0px;
   margin-bottom: 0px;
   transition: box-shadow 0.2s, background 0.2s;
