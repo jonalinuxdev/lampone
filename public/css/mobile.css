@@ -385,3 +385,16 @@ button:hover {
 .button-wrapper i{
   font-size: 30px;
 }
+
+.panel-list {
+  font-size: 14px;
+  font-family: "Ubuntu Mono", monospace;
+  background: #101317;
+  max-width: 960px;
+  max-height: 400px; /* o quanto vuoi */
+  min-height: 300px;
+  overflow-y: auto;   /* scroll verticale */
+  margin: 0px auto;
+  padding: 20px;
+  border: 2px solid #1c2128;
+}

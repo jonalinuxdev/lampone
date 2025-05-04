@@ -19,7 +19,7 @@
   <a href="index.html" class="logo-area">
     <img src="img/logo.png" alt="Logo" class="site-logo">
     <span class="site-title">lampone</span>
-    <p class="logomobile">Mobile v0.6b</p>
+    <p class="logomobile">Mobile v0.7b</p>
   </a>
 </header>
 
@@ -71,7 +71,7 @@
 
         </div>
 
-
+              
 
 
 
@@ -85,7 +85,30 @@
     <aside class="sidebar flag-sidebar" id="countrySelector">
       <!-- Lista paesi -->
     </aside>
+
   </div>
+
+
+
+                   <div class="panel-list">
+                 <p>guest@<span style="color:#58a6ff;">lampone</span>:<span style="color:#8b949e;">~</span>$ <span id="statusMessage" ></span> <span class="blinking-cursor"> |</span> 
+                </p>
+
+                <p>curl ipinfo.io/ip ><span id="locationInfo" class="ip"></span></p>
+                <p><span id="loader"></span><span class="canali">Channels</span> <span id="totalChannelsCount"></span> <span style="color:orange;">group title: </span><span style="color:#c9d1d9;" id="listmessage"></span></p>
+                <p style="color:#58a6ff;">lists ></p>
+                <p id="loadedPlaylistsDisplay"></p>
+                <p style="color:#58a6ff;">---</p>
+                
+                <p id="console"></p>
+                <p id="localFileNameDisplay"></p>
+                <p style="color:#58a6ff;">https://raw.githubusercontent.com/jonalinuxdev/auto-m3u-updater/refs/heads/main/list.m3u</p>
+
+
+
+        </div>
+
+
 
 </main>
 
@@ -106,6 +129,19 @@
 <script src="js/epg.js"></script>
 <script src="js/visits.js"></script>
 <script src="js/footer.js"></script>
+<script>const input = document.getElementById('remoteM3uUrl');
+const clearBtn = document.getElementById('clearRemoteUrl');
+
+input.addEventListener('input', () => {
+  clearBtn.style.display = input.value ? 'block' : 'none';
+});
+
+clearBtn.addEventListener('click', () => {
+  input.value = '';
+  clearBtn.style.display = 'none';
+  input.focus();
+});
+</script>
 
 </body>
 </html>
