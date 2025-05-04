@@ -611,7 +611,7 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 }
 
     // Mostra messaggio e passa al prossimo
-    statusMsg.innerHTML = `<span style=" font-size:20px;"> <i class="fa-duotone fa-solid fa-spinner-third fa-spin"></i><span> loading</span><span>` ;
+    statusMsg.innerHTML = `<span> loading</span>` ;
 
     const visible = Array.from(document.querySelectorAll('.channel')).filter(el => el.style.display !== 'none');
     const i = visible.findIndex(el => el.dataset.url === url);
