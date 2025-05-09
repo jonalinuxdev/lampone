@@ -561,7 +561,7 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 
 
             // Start playback once the manifest is parsed
-            player.play();
+            //player.play();
             if (statusMsg) statusMsg.textContent = ''; // Clear loading message
 
             // Highlight the channel that is actually starting
