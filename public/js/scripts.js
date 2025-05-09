@@ -559,10 +559,17 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 
 
 
+                     const autoplayEnabled = localStorage.getItem('lampone-autoplay') === 'true';
+                        if (autoplayEnabled) {
+                      player.play().catch(err => console.warn("Autoplay blocked:", err));
+                    } else {
+                    if (statusMsg) statusMsg.textContent = '';
+                 }
 
-            // Start playback once the manifest is parsed
-            //player.play();
-            if (statusMsg) statusMsg.textContent = ''; // Clear loading message
+
+
+
+
 
             // Highlight the channel that is actually starting
             document.querySelectorAll('.channel').forEach(c => c.classList.remove('selected'));
@@ -950,31 +957,38 @@ function checkChannelListEmpty(name = 'Last Playlist') {
 // --- Initial Load ---
 // Wait for the DOM to be fully loaded before starting
 document.addEventListener('DOMContentLoaded', () => {
-    // Load playlists (this function now handles loading from localStorage first)
     loadAllPlaylists(m3uUrls);
 
     const savedPlaylists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PLAYLISTS_KEY) || '[]');
-savedPlaylists.forEach(name => addLoadedPlaylistName(name));
+    savedPlaylists.forEach(name => addLoadedPlaylistName(name));
 
-
-   
     if (searchBox) {
         searchBox.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
             const channels = document.querySelectorAll('.channel');
             channels.forEach(channel => {
                 const channelName = channel.dataset.name;
-                if (channelName.includes(searchTerm)) {
-                    channel.style.display = 'flex'; // Or block, depending on your CSS
-                } else {
-                    channel.style.display = 'none';
-                }
+                channel.style.display = channelName.includes(searchTerm) ? 'flex' : 'none';
             });
-                checkChannelListEmpty();
+            checkChannelListEmpty();
         });
     }
-        checkChannelListEmpty();
+
+    // ✅ Aggiungi questo dentro DOMContentLoaded
+    const autoplaySwitch = document.getElementById('autoplaySwitch');
+    const AUTO_KEY = 'lampone-autoplay';
+    if (autoplaySwitch) {
+        const saved = localStorage.getItem(AUTO_KEY);
+        autoplaySwitch.checked = saved === 'true';
+
+        autoplaySwitch.addEventListener('change', () => {
+            localStorage.setItem(AUTO_KEY, autoplaySwitch.checked ? 'true' : 'false');
+        });
+    }
+
+    checkChannelListEmpty();
 });
+
 
 (function () {
   const consoleElement = document.getElementById('console');
@@ -991,6 +1005,8 @@ savedPlaylists.forEach(name => addLoadedPlaylistName(name));
   const originalLog = console.log;
   const originalWarn = console.warn;
   const originalError = console.error;
+
+
 
   console.log = function (...args) {
     originalLog.apply(console, args);
