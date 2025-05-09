@@ -545,7 +545,7 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 } else if (height >= 96) {
   label = 'Retro 96p'; color = '#964B00';
 } else {
-  label = 'undefined'; color = '#1c2128'; // Meme mode
+  label = 'undefined'; color = '#FFF'; // Meme mode
 }
 
 
@@ -661,9 +661,9 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 
 function updateChannelTitle(name, logo) {
     channelTitle.innerHTML = `
-      <img src="${logo}" alt="" ><p> ${name}<p/>
+      <span> ${name}<span/>
       `;
-      // Carica l'EPG per il canale attuale
+      // Carica l'EPG per il canale attuale <img src="${logo}" alt="" >
   loadEPG(name); // <-- Passa il nome del canale
  }
 
@@ -954,6 +954,46 @@ function checkChannelListEmpty(name = 'Last Playlist') {
 
 
 
+function switchChannel(direction) {
+  const visible = Array.from(document.querySelectorAll('.channel')).filter(el => el.style.display !== 'none');
+  if (!visible.length) {
+    console.warn("Nessun canale visibile.");
+    return;
+  }
+
+  const currentIndex = visible.findIndex(el => el.classList.contains('selected'));
+
+  let nextIndex;
+  if (currentIndex === -1) {
+    nextIndex = 0;
+  } else {
+    nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    if (nextIndex < 0) nextIndex = visible.length - 1;
+    if (nextIndex >= visible.length) nextIndex = 0;
+  }
+
+  const next = visible[nextIndex];
+  if (next) {
+    const name = next.dataset.display;
+    const logo = next.dataset.logo;
+    const url = next.dataset.url;
+
+    document.querySelectorAll('.channel').forEach(el => el.classList.remove('selected'));
+    next.classList.add('selected');
+    next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    playStream(url);
+    updateChannelTitle(name, logo);
+    console.log(`✅ Cambiato canale: ${name}`);
+  }
+}
+
+
+
+
+
+
+
 // --- Initial Load ---
 // Wait for the DOM to be fully loaded before starting
 document.addEventListener('DOMContentLoaded', () => {
@@ -987,6 +1027,128 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     checkChannelListEmpty();
+    // AGGIUNGI QUESTO:
+  document.getElementById('prevChannelBtn')?.addEventListener('click', () => switchChannel('prev'));
+  document.getElementById('nextChannelBtn')?.addEventListener('click', () => switchChannel('next'));
+
+  const player = document.getElementById('player');
+  const bigPlayPause = document.getElementById('bigPlayPause');
+  const bigIcon = bigPlayPause.querySelector('i');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const smallIcon = playPauseBtn.querySelector('i');
+  const muteToggle = document.getElementById('muteToggle');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const wrapper = document.getElementById('playerWrapper');
+
+  // Play/pause piccolo
+  playPauseBtn.addEventListener('click', () => {
+    if (player.paused) {
+      player.play();
+      smallIcon.className = 'fas fa-pause';
+      bigIcon.className = 'fas fa-pause';
+    } else {
+      player.pause();
+      smallIcon.className = 'fas fa-play';
+      bigIcon.className = 'fas fa-play';
+    }
+  });
+
+  // Play/pause grande
+  bigPlayPause.addEventListener('click', () => {
+    if (player.paused) {
+      player.play();
+      bigIcon.className = 'fas fa-pause';
+      smallIcon.className = 'fas fa-pause';
+    } else {
+      player.pause();
+      bigIcon.className = 'fas fa-play';
+      smallIcon.className = 'fas fa-play';
+    }
+  });
+
+  // Sync play/pause
+  player.addEventListener('play', () => {
+    bigIcon.className = 'fas fa-pause';
+    smallIcon.className = 'fas fa-pause';
+  });
+
+  player.addEventListener('pause', () => {
+    bigIcon.className = 'fas fa-play';
+    smallIcon.className = 'fas fa-play';
+  });
+
+  // Fullscreen
+  fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      wrapper.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  // Volume
+  volumeSlider.addEventListener('input', () => {
+    const icon = muteToggle.querySelector('i');
+    player.volume = parseFloat(volumeSlider.value);
+    player.muted = player.volume === 0;
+    icon.className = player.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+  });
+
+  const volumePopup = document.querySelector('.volume-popup');
+  let volumeTimeout;
+
+  muteToggle.addEventListener('click', () => {
+    volumePopup.classList.toggle('hidden');
+    if (!volumePopup.classList.contains('hidden')) {
+      clearTimeout(volumeTimeout);
+      volumeTimeout = setTimeout(() => volumePopup.classList.add('hidden'), 4000);
+    }
+  });
+
+  volumePopup.addEventListener('mouseenter', () => {
+    clearTimeout(volumeTimeout);
+  });
+
+  volumePopup.addEventListener('mouseleave', () => {
+    volumeTimeout = setTimeout(() => volumePopup.classList.add('hidden'), 1500);
+  });
+
+  // Qualità toggle
+  document.getElementById('qualityToggle')?.addEventListener('click', () => {
+    document.getElementById('qualityOptions')?.classList.toggle('hidden');
+  });
+
+  // Mostra/Nascondi controlli
+  let controlsTimeout;
+
+  function hidePlayerControls() {
+    wrapper.classList.remove('show-controls');
+  }
+
+ function showPlayerControls() {
+  wrapper.classList.add('show-controls');
+  clearTimeout(controlsTimeout);
+  controlsTimeout = setTimeout(() => {
+    hidePlayerControls(); // ✅ nasconde sempre, non solo in fullscreen
+  }, 2500);
+}
+
+
+  wrapper.addEventListener('mousemove', showPlayerControls);
+  showPlayerControls(); // mostra all'avvio
+
+  // Tasti ← → per cambiare canale e mostrare temporaneamente i controlli
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      switchChannel('next');
+      showPlayerControls();
+    }
+    if (e.key === 'ArrowLeft') {
+      switchChannel('prev');
+      showPlayerControls();
+    }
+  });
 });
 
 
@@ -1064,7 +1226,6 @@ updateStatsInfo();
 setInterval(() => {
 updateStatsInfo();
 }, 300000); // 300000 milliseconds = 5 minutes
-
 
 
 
