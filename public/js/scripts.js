@@ -692,7 +692,7 @@ function createChannelElement(name, logo, url) {
         div.appendChild(img);
     } else {
         const icon = document.createElement('i');
-        icon.className = 'fa-solid fa-tv channel-logo';
+        icon.className = 'fa-duotone fa-solid fa-clapperboard-play';
         icon.style = `font-size: 28px; color: ${getReadableRandomColor()};`;
         icon.title = name;
         div.appendChild(icon);
