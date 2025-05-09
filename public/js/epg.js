@@ -68,11 +68,34 @@ function formatHourMinutes(date) {
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 
+
+
+
+
 // Load the EPG guide
 async function loadEPG(channelName) {
   const container = document.getElementById('epg-container');
   container.innerHTML = '';
   const now = new Date();
+
+  // Reset UI player EPG subito
+  const epgStartEl = document.getElementById('epgStart');
+  const epgEndEl = document.getElementById('epgEnd');
+  const epgBar = document.getElementById('epgProgressBar');
+  const epgTitleEl = document.querySelector('.playername span');
+  const epgNextEl = document.getElementById('epgNext');
+
+  if (epgBar) epgBar.style.width = '0%';
+  if (epgStartEl) epgStartEl.textContent = '';
+  if (epgEndEl) epgEndEl.textContent = '';
+  if (epgTitleEl) {
+    epgTitleEl.textContent = '';
+    epgTitleEl.closest('.playername')?.classList.add('empty');
+  }
+  if (epgNextEl) {
+    epgNextEl.innerHTML = '';
+    epgNextEl.classList.add('empty');
+  }
 
   const normalizedChannelName = normalizeEPGName(channelName);
   const epgTargetName = channelNameMap[normalizedChannelName] || normalizedChannelName;
@@ -84,7 +107,7 @@ async function loadEPG(channelName) {
     epgMap = await res.json();
   } catch (err) {
     console.error('EPG sources error:', err);
-    container.innerHTML = ``;
+    container.innerHTML = '';
     return;
   }
 
@@ -119,72 +142,44 @@ async function loadEPG(channelName) {
 
       let html = '';
 
- const epgStartEl = document.getElementById('epgStart');
-const epgEndEl = document.getElementById('epgEnd');
-const epgBar = document.getElementById('epgProgressBar');
-const epgTitleEl = document.querySelector('.playername span');
+      if (nowProgram) {
+        const start = parseEPGDate(nowProgram.getAttribute('start'));
+        const stop = parseEPGDate(nowProgram.getAttribute('stop'));
+        currentEPGEndTime = stop;
 
-if (nowProgram) {
-  const start = parseEPGDate(nowProgram.getAttribute('start'));
-  const stop = parseEPGDate(nowProgram.getAttribute('stop'));
-  currentEPGEndTime = stop;
+        const title = nowProgram.querySelector('title')?.textContent || 'No title';
+        const progress = Math.min(100, ((now - start) / (stop - start)) * 100).toFixed(1);
 
-  const title = nowProgram.querySelector('title')?.textContent || 'No title';
-  const progress = Math.min(100, ((now - start) / (stop - start)) * 100).toFixed(1);
-
-  if (epgBar) epgBar.style.width = `${progress}%`;
-  if (epgStartEl) epgStartEl.textContent = formatHourMinutes(start);
-  if (epgEndEl) epgEndEl.textContent = formatHourMinutes(stop);
-  if (epgTitleEl) epgTitleEl.textContent = title;
-
-  html += `
-    <div class="program" style="padding-left:10px;">
-      <span class="cal-sans-regular" style="font-size:22px;">${channelName}</span> 
-      <div style="display:flex; justify-content:space-between;">
-        <div>
-          <span style="font-size:14px; color:#f9c855;">
-            <i class="fa-duotone fa-solid fa-timer"></i> ${formatHourMinutes(start)} 
-            <span style="color:#fff;">${title}
-              <a href="https://www.google.com/search?q=tv+guide+${encodeURIComponent(channelName)}" target="_blank" style="color:#f9c855; font-size:12px; text-decoration:none; margin-left:5px;">
-                <i class="fa-duotone fa-solid fa-arrow-up-right-from-square fa-fade"></i>
-              </a>    
-            </span>
-          </span>
-        </div>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" style="width: ${progress}%"></div>
-      </div>
-    </div>`;
-} else {
-  currentEPGEndTime = null;
-
-  if (epgBar) epgBar.style.width = '0%';
-  if (epgStartEl) epgStartEl.textContent = '';
-  if (epgEndEl) epgEndEl.textContent = '';
-  if (epgTitleEl) epgTitleEl.textContent = '';
-}
-
-
-
+        if (epgBar) epgBar.style.width = `${progress}%`;
+        if (epgStartEl) epgStartEl.textContent = formatHourMinutes(start);
+        if (epgEndEl) epgEndEl.textContent = formatHourMinutes(stop);
+        if (epgTitleEl) {
+          epgTitleEl.textContent = title;
+          epgTitleEl.closest('.playername')?.classList.remove('empty');
+        }
+      } else {
+        currentEPGEndTime = null;
+      }
 
       if (nextProgram) {
         const start = parseEPGDate(nextProgram.getAttribute('start'));
         const title = nextProgram.querySelector('title')?.textContent || 'No title';
-        html += `<div class="program" style="background:#1c2128; padding-top:0px; padding-left:10px;">
-          <span style="color:#ff6cb8;">  Next ${formatHourMinutes(start)} <i class="fa-duotone fa-solid fa-chevrons-right"></i> </span> ${title} </div>`;
+
+        if (epgNextEl) {
+          epgNextEl.innerHTML = `<span style="color:#f6446b;">Next ${formatHourMinutes(start)} →</span> <span style="color:#fff;">${title}</span>`;
+          epgNextEl.classList.remove('empty');
+        }
       }
 
-      container.innerHTML = html || `<p>No program available.</p>`;
+      container.innerHTML = html || ``;
       try {
-  const hostname = new URL(guideFile, window.location.origin).hostname;
-  container.innerHTML += `<p style="font-size:0px;color:#888;">Source: ${hostname}</p>`;
-} catch (e) {
-  console.warn('Invalid URL for guideFile:', guideFile);
-}
+        const hostname = new URL(guideFile, window.location.origin).hostname;
+        container.innerHTML += ``;
+      } catch (e) {
+        console.warn('Invalid URL for guideFile:', guideFile);
+      }
 
       return;
-
     } catch (err) {
       console.error(`Error parsing ${guideFile}:`, err);
     }
@@ -192,6 +187,7 @@ if (nowProgram) {
 
   container.innerHTML = `<div style="text-align:center;"><i class="fa-duotone fa-solid fa-circle-info"></i> EPG not found for this channel.</div>`;
 }
+
 
 // Check every 60 seconds if the program has ended
 setInterval(() => {
