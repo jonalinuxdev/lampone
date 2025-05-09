@@ -1149,6 +1149,39 @@ document.addEventListener('DOMContentLoaded', () => {
       showPlayerControls();
     }
   });
+
+  document.addEventListener('keydown', (e) => {
+  const player = document.getElementById('player');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const muteToggle = document.getElementById('muteToggle');
+  const icon = muteToggle?.querySelector('i');
+
+  if (!player) return;
+
+  switch (e.code) {
+    case 'Space':
+      e.preventDefault(); // Previene scroll
+      document.getElementById('playPauseBtn')?.click();
+      break;
+
+    case 'ArrowUp':
+      e.preventDefault();
+      player.volume = Math.min(player.volume + 0.05, 1);
+      if (volumeSlider) volumeSlider.value = player.volume;
+      if (icon) icon.className = player.volume === 0 ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+      break;
+
+    case 'ArrowDown':
+      e.preventDefault();
+      player.volume = Math.max(player.volume - 0.05, 0);
+      if (volumeSlider) volumeSlider.value = player.volume;
+      if (icon) icon.className = player.volume === 0 ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+      break;
+  }
+});
+
+
+
 });
 
 
