@@ -31,13 +31,14 @@ html, body {
 }
 
 .site-logo {
-  height: 32px;
+  height: 56px;
   width: auto;
 }
 
 .site-title {
   font-size: 20px;
   font-weight: 600;
+  margin-left: -15px;
 }
 
 .logomobile {
@@ -68,7 +69,17 @@ html, body {
   max-width: 100%;
   height: auto;
   background: #161b22;
+  background-image: url("../img/logo.svg");
+  background-position: center top;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
+
+
+
+
+
 
 .panel-box {
   width: 100%;

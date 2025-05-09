@@ -127,16 +127,17 @@ async function loadEPG(channelName) {
         const progress = Math.min(100, ((now - start) / (stop - start)) * 100).toFixed(1);
 
         html += `
-          <div class="program" style="background:#1c212869; padding:10px;">
-            <span style="font-size:17px;">
-              <span style="color:#f9c855;">Now: </span>${title}
+          <div class="program" style="padding-left:10px;">
+            <span class="cal-sans-regular" style="font-size:22px;">${channelName}   <span id="qualityInfo"></span></span> 
+
+            <div style="display:flex; justify-content:space-between;">
+              <div><span style="font-size:14px; color:#f9c855;"><i class="fa-duotone fa-solid fa-timer"></i> ${formatHourMinutes(start)} <span style="color:#fff;">
+               ${title}
               <a href="https://www.google.com/search?q=tv+guide+${encodeURIComponent(channelName)}" target="_blank" style="color:#f9c855; font-size:12px; text-decoration:none; margin-left:5px;">
                 <i class="fa-duotone fa-solid fa-arrow-up-right-from-square fa-fade"></i>
-              </a>
-            </span>
-            <div style="display:flex; justify-content:space-between; font-size:12px; padding-top:10px;">
-              <div><span style="color:#f9c855"><i class="fa-duotone fa-solid fa-timer"></i></span> ${formatHourMinutes(start)}</div>
-              <div>${formatHourMinutes(stop)}</div>
+              </a>    
+            </span> </div>
+        
             </div>
             <div class="progress-bar">
               <div class="progress" style="width: ${progress}%"></div>
@@ -149,8 +150,8 @@ async function loadEPG(channelName) {
       if (nextProgram) {
         const start = parseEPGDate(nextProgram.getAttribute('start'));
         const title = nextProgram.querySelector('title')?.textContent || 'No title';
-        html += `<div class="program" style="background:#1c2128; padding:10px;">
-          <span style="color:#ff6cb8;">${formatHourMinutes(start)} <i class="fa-duotone fa-solid fa-chevrons-right"></i> </span> ${title}</div>`;
+        html += `<div class="program" style="background:#1c2128; padding-top:0px; padding-left:10px;">
+          <span style="color:#ff6cb8;">  Next ${formatHourMinutes(start)} <i class="fa-duotone fa-solid fa-chevrons-right"></i> </span> ${title} </div>`;
       }
 
       container.innerHTML = html || `<p>No program available.</p>`;

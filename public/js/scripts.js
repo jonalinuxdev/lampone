@@ -545,13 +545,13 @@ hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 } else if (height >= 96) {
   label = 'Retro 96p'; color = '#964B00';
 } else {
-  label = 'undefined'; color = '#C0392B'; // Meme mode
+  label = 'undefined'; color = '#1c2128'; // Meme mode
 }
 
 
 
   const bitrate = Math.round(level.bitrate / 1000);
-  qualityInfo.innerHTML = `<p><i class="fa-duotone fa-solid fa-signal-stream"></i> ${label}</p> `;
+  qualityInfo.innerHTML = ` <span><i class="fa-duotone fa-solid fa-signal-stream"></i> ${label}</span> `;
   qualityInfo.style.color = color;
 
 });
@@ -661,53 +661,66 @@ function updateChannelTitle(name, logo) {
  }
 
 
-// Function to create a channel list item element for the sidebar
+
 function createChannelElement(name, logo, url) {
     const div = document.createElement('div');
-    div.className = 'channel'; // Apply 'channel' class for styling
-    div.dataset.url = url; // Store channel URL
-    div.dataset.name = name.toLowerCase(); // Store lowercase name for searching
-    div.dataset.display = name; // Store original name for display
-    div.dataset.logo = logo; // Store logo URL
-
-    const img = document.createElement('img');
-    img.src = logo && logo.trim() !== '' ? logo : '../img/logo.png'; // Use ../img/logo.png as fallback
-    img.alt = name;
-    img.className = 'channel-logo'; // Apply 'channel-logo' class
+    div.className = 'channel';
+    div.dataset.url = url;
+    div.dataset.name = name.toLowerCase();
+    div.dataset.display = name;
+    div.dataset.logo = logo;
 
     const nameSpan = document.createElement('span');
     nameSpan.textContent = name;
-    nameSpan.className = 'channel-name'; // Apply 'channel-name' class
+    nameSpan.className = 'channel-name';
 
-    div.appendChild(img); // Add logo to the div
-    div.appendChild(nameSpan); // Add name to the div
+    if (logo && logo.trim() !== '') {
+        const img = document.createElement('img');
+        img.src = logo;
+        img.alt = name;
+        img.title = name;
+        img.className = 'channel-logo';
 
-    // Add click event listener to play the channel when clicked
+        img.onerror = () => {
+            const icon = document.createElement('i');
+            icon.className = 'fa-duotone fa-solid fa-clapperboard-play'; //<i class="fa-duotone fa-solid fa-clapperboard-play"></i>
+            icon.style = `font-size: 28px; color: ${getReadableRandomColor()};`;
+            icon.title = name;
+            img.replaceWith(icon);
+        };
+
+        div.appendChild(img);
+    } else {
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-tv channel-logo';
+        icon.style = `font-size: 28px; color: ${getReadableRandomColor()};`;
+        icon.title = name;
+        div.appendChild(icon);
+    }
+
+    div.appendChild(nameSpan);
+
     div.addEventListener('click', () => {
-        // Remove 'selected' class from all channels
         document.querySelectorAll('.channel').forEach(c => c.classList.remove('selected'));
-
-        // Add 'selected' class only to the clicked channel
         div.classList.add('selected');
 
-        // Show loading message
-        if (statusMsg) { // Safety check
-            statusMsg.innerHTML = `<span>loading</span`;
+        if (statusMsg) {
+            statusMsg.innerHTML = `<span>loading</span>`;
         } else {
             console.warn("Element with ID 'statusMsg' not found.");
         }
 
-        playStream(url); // Play the stream
-        updateChannelTitle(name, logo); // Update the channel title area
+        playStream(url);
+        updateChannelTitle(name, logo);
     });
 
-    // Add the created channel element to the channel list
-    if (channelList) { // Safety check
+    if (channelList) {
         channelList.appendChild(div);
     } else {
         console.warn("Element with ID 'channelList' not found. Cannot append channel.");
     }
 }
+
 
 
 
@@ -725,6 +738,12 @@ function getCountryCode(groupName) {
     return map[key] || key; // Return the corresponding country code or the lowercase group name itself
 }
 
+function getReadableRandomColor() {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = 70 + Math.random() * 30; // 70–100%
+    const lightness = 60 + Math.random() * 20;  // 60–80%, leggibile su sfondo scuro
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
 
 // Function to create a country flag element in the country selector
 function createCountryFlag(country) {
@@ -733,33 +752,36 @@ function createCountryFlag(country) {
     wrapper.className = 'flag-wrapper'; // Apply 'flag-wrapper' class
 
     const flag = document.createElement('img');
-    flag.className = 'flag'; // Apply 'flag' class
-    flag.src = `https://hatscripts.github.io/circle-flags/flags/${code}.svg`; // Set flag image source
-    flag.onerror = () => {
-        // Fallback image if the specific flag is not found
-        flag.src = '../img/folder.png'; // Generic placeholder flag https://hatscripts.github.io/circle-flags/flags/xx.svg
-    };
-    flag.title = country; // Set tooltip text to the country name
-    flag.dataset.country = country; // Store country name in a data attribute
+    flag.className = 'flag';
+    flag.src = `https://hatscripts.github.io/circle-flags/flags/${code}.svg`;
+    flag.title = country;
+    flag.dataset.country = country;
 
-    const count = allChannels[country]?.length || 0; // Get the number of channels for this country
+    const count = allChannels[country]?.length || 0;
     const label = document.createElement('div');
-    label.className = 'flag-label'; // Apply 'flag-label' class
-    label.textContent = `${country} (${count})`; // Display country name and channel count
+    label.className = 'flag-label';
+    label.textContent = `${country} (${count})`;
 
-    wrapper.appendChild(flag); // Add flag image to the wrapper
-    wrapper.appendChild(label); // Add label to the wrapper
+    flag.onerror = () => {
+    const color = getReadableRandomColor();
+    wrapper.innerHTML = `<span style="font-size:25px; color:${color};">
+        <i class="fa-solid fa-folder"></i>
+    </span>`;
+    wrapper.appendChild(label); // Reinserisci l'etichetta
+};
 
-    // Add click event listener to load channels for this country
+
+
+    wrapper.appendChild(flag);
+    wrapper.appendChild(label);
+
     wrapper.addEventListener('click', () => {
-        // Remove 'selected' class from all flag wrappers
         document.querySelectorAll('.flag-wrapper').forEach(w => w.classList.remove('selected'));
-        wrapper.classList.add('selected'); // Add 'selected' class to the clicked wrapper
-        loadCountry(country); // Load channels for the selected country
+        wrapper.classList.add('selected');
+        loadCountry(country);
     });
 
-    // Add the created flag wrapper to the country selector area
-    if (countrySelector) { // Safety check
+    if (countrySelector) {
         countrySelector.appendChild(wrapper);
     } else {
         console.warn("Element with ID 'countrySelector' not found. Cannot append country flag.");
