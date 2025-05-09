@@ -196,7 +196,7 @@ button:hover {
   text-decoration: underline;
 }
 
-.visite{}
+
 
 #player {
   width: 100%; /* Occupare il 100% della larghezza del suo contenitore (.main-content) */
@@ -292,7 +292,7 @@ button:hover {
   background-color: #444;
   border-radius: 4px;
   overflow: hidden;
-  height: 6px;
+  height: 3.5px;
   margin-top: 4px;
 }
 
